@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="vendor/bootstrap-5.0.2-dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/fontawesome/fontawesome-free-6.5.2-web/css/all.css">
+    <style>
+        .calcy {
+            background-color: rgb(9, 134, 134);
+            margin-top: 0%;
+        }
+
+        .card {
+            margin-top: 20px;
+            justify-content: center;
+            background-color: rgb(16, 16, 16);
+        }
+
+        .display {
+            color: aliceblue;
+            height: 80px;
+            background-color: rgb(84, 82, 82);
+        }
+
+        #expression {
+            margin: 5px;
+            padding: 3px;
+            font-size: large;
+        }
+
+        #number {
+            margin: 5px;
+            padding: 3px;
+            font-size: larger;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            background-color: rgb(7, 173, 173);
+            padding: 9px;
+        }
+
+        .container-fluid {
+            margin: 0%;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 3px;
+            margin: 4px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: rgb(200, 198, 198);
+        }
+
+        footer {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            background-color: rgb(7, 98, 98);
+            padding: 15px;
+            color: aliceblue;
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calcy">
+        <div class="container-fluid">
+            <h1>Scientific Calculator </h1>
+        </div>
+
+        <div class="container-fluid">
+            <div class="d-flex justify-content-center">
+                <div class="col-sm-8 col-md-4 col-lg-4 ">
+                    <div class="card p-4">
+                        <div class="display">
+                            <div id="expression"></div>
+                            <div id="number"></div>
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn"
+                                data-event_key="sin⁻¹">sin<sup>-1</sup></button>
+                            <button type="button" class="btn btn-light calc-btn"
+                                data-event_key="cos⁻¹">cos<sup>-1</sup></button>
+                            <button type="button" class="btn btn-light calc-btn"
+                                data-event_key="tan⁻¹">tan<sup>-1</sup></button>
+                            <button type="button" class="btn btn-light calc-btn deg-rad-btn"
+                                data-event_key="°">Deg</button>
+                            <button type="button" class="btn btn-light calc-btn " data-event_key="c">Rad</button>
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="sin">sin</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="cos">cos</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="tan">tan</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="log">log</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="ln">ln</button>
+
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="∫">∫dx</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="e">e</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="π">π</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="(">(</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key=")">)</button>
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn"
+                                data-event_key="^">X<sup>Y</sup></button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="1/">1/x</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="!">x!</button>
+                            <button type="button" class="btn btn-light calc-btn"
+                                data-event_key="∛"><sup>3</sup>√x</button>
+                            <button type="button" class="btn btn-light calc-btn"
+                                data-event_key="√"><sup>2</sup>√x</button>
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="7">7</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="8">8</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="9">9</button>
+                            <button type="button" class="btn btn-light calc-btn backspace-btn"
+                                data-event_key="Backspace"><i class="fa-solid fa-delete-left"></i></button>
+                            <button type="button" class="btn btn-light calc-btn clear-btn" data-event_key="Delete"><i
+                                    class="fa-solid fa-eraser"></i></button>
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="4">4</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="5">5</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="6">6</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="*"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="/"><i
+                                    class="fa-solid fa-divide"></i></button>
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="1">1</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="2">2</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="3">3</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="+"><i
+                                    class="fa-solid fa-plus"></i></button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="-"><i
+                                    class="fa-solid fa-minus"></i></button>
+                        </div>
+                        <div class="row col-2.5">
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="0">0</button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="."><b>.</b></button>
+                            <button type="button" class="btn btn-light calc-btn" data-event_key="10^"><i
+                                    class="fa-solid fa-xmark"></i> 10<sup>x</sup></button>
+                            <button type="button" class="btn btn-light calc-btn equal-btn" data-event_key="="><i
+                                    class="fa-solid fa-equals"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            
+            © 2024 Aakriti Jha. All rights reserved.
+        </footer>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="vendor/bootstrap-5.0.2-dist/js/bootstrap.js"></script>
+
+    <script>
+        let isError = false;
+
+        // Function to update the current number display
+        function appendNumber(number) {
+            if (isError) clearDisplay();
+            var currentNum = $("#number").html();
+            var newNum = currentNum + number;
+            $("#number").html(newNum);
+        }
+
+        // Function to append operators to the expression
+        function appendOperator(operator) {
+            var currentNum = $("#number").html();
+            var expression = $("#expression").html();
+
+            if (currentNum !== "") {
+                expression += currentNum + " " + operator + " ";
+                $("#expression").html(expression);
+                $("#number").html('');
+            }
+        }
+
+        // Function to evaluate the entire expression
+        function evaluateExpression() {
+            var expression = $("#expression").html() + $("#number").html();
+
+            try {
+                var result = customEval(expression);
+                $("#expression").html(expression);
+                $("#number").html("= " + result);
+            } catch (error) {
+                $("#number").html("Error");
+                isError = true;
+            }
+        }
+
+        // Handle keypress events for numbers, operators, and the equals key
+        $(document).on('keypress', function (e) {
+            var key = e.key;
+            if (!isNaN(key)) {
+                appendNumber(key);
+            } else if (['+', '-', '*', '/', '.'].includes(key)) {
+                appendOperator(key);
+            } else if (key === '=' || key == 'Enter') {
+                evaluateExpression();
+            }
+        });
+
+        function clearDisplay() {
+            $("#number").html('');
+            $("#expression").html('');
+            isError = false;
+        }
+
+        function removeLastCharacter() {
+            var currentNum = $("#number").html();
+            if (currentNum) {
+                var updatedNum = currentNum.slice(0, -1);
+                $("#number").html(updatedNum);
+            }
+        }
+
+        // Button click events
+        $('.calc-btn').on('click', function () {
+            var key = $(this).data('event_key');
+
+            if (['+', '-', '*', '/'].includes(key)) {
+                appendOperator(key);
+            }
+            else if (key == ".") { appendDecimal(); }
+            else if (key == '=' || key == 'Enter') {
+                evaluateExpression();
+            }
+            else if (key === 'Backspace') {
+                removeLastCharacter();
+            }
+            else if (key === 'Delete') {
+                clearDisplay();
+            }
+
+            else {
+                appendNumber(key);
+            }
+        });
+
+        // Custom eval function to handle scientific operations
+        function customEval(expression) {
+            // Replace scientific functions with JavaScript equivalents
+            expression = expression.replace(/sin\((.*?)\)/g, 'Math.sin($1)');
+            expression = expression.replace(/cos\((.*?)\)/g, 'Math.cos($1)');
+            expression = expression.replace(/tan\((.*?)\)/g, 'Math.tan($1)');
+            expression = expression.replace(/log\((.*?)\)/g, 'Math.log10($1)');
+            expression = expression.replace(/ln\((.*?)\)/g, 'Math.log($1)');
+            expression = expression.replace(/sin⁻¹\((.*?)\)/g, 'Math.asin($1)');
+            expression = expression.replace(/cos⁻¹\((.*?)\)/g, 'Math.acos($1)');
+            expression = expression.replace(/tan⁻¹\((.*?)\)/g, 'Math.atan($1)');
+            expression = expression.replace(/e/g, Math.E);
+            expression = expression.replace(/π/g, Math.PI);
+            expression = expression.replace(/√\((.*?)\)/g, 'Math.sqrt($1)');
+            expression = expression.replace(/∛\((.*?)\)/g, 'Math.cbrt($1)');
+            expression = expression.replace(/\^/g, 'Math.pow($1, $2)');
+            expression = expression.replace(/10\^(\d+)/g, 'Math.pow(10, $1)');
+            expression = expression.replace(/(\d+)!/g, 'factorial($1)');
+
+            return eval(expression);  // Evaluate the expression
+        }
+
+        // Factorial function
+        function factorial(n) {
+            if (n == 0 || n == 1) return 1;
+            return n * factorial(n - 1);
+        }
+
+        function appendDecimal() {
+            var currentNum = $("#number").html();
+            if (!currentNum.includes('.')) {
+                $("#number").html(currentNum + '.');
+            }
+        }
+
+        $(document).on('keydown', function () {
+            if (isError) clearDisplay();
+        });
+
+        var isDegreeMode = true;
+
+        $('.deg-rad-btn').on('click', function () {
+            let selectedMode = $(this).text();
+
+            if (selectedMode === 'Deg') {
+                isDegreeMode = true;
+                $('.deg-rad-btn[data-event_key="°"]').addClass('active');
+                $('.deg-rad-btn[data-event_key="c"]').removeClass('active');
+            }
+            else if (selectedMode === 'Rad') {
+                isDegreeMode = false;
+                $('.deg-rad-btn[data-event_key="c"]').addClass('active');
+                $('.deg-rad-btn[data-event_key="°"]').removeClass('active');
+            }
+        });
+
+        function toggleDegreeRadian() {
+            isDegreeMode = !isDegreeMode;
+        }
+
+        function toRadians(degrees) {
+            return degrees * (Math.PI / 180);
+        }
+
+        function toDegrees(radians) {
+            return radians * (180 / Math.PI);
+        }
+
+        function evaluateTrigFunction(fn, value) {
+            if (isDegreeMode) {
+                value = toRadians(value);
+            }
+            return evaluateScientificFunction(fn, value);
+        }
+
+        $('.deg-rad-btn').on('click', function () {
+            toggleDegreeRadian();
+            $(this).html(isDegreeMode ? "Deg" : "Rad");
+        });
+
+    </script>
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+
+
+</body>
+
+</html>
