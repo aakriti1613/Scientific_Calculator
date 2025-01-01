@@ -13,6 +13,9 @@ FEATURES
 - **Error Handling:** Proper error messages for invalid inputs (e.g., division by zero, negative roots).
 - **Responsive Design:** The layout adjusts automatically for different screen sizes, making it accessible on both mobile and desktop devices.
 
+![To Do List - Google Chrome 1_1_2025 10_56_08 PM](https://github.com/user-attachments/assets/3ee0e327-2303-4bf0-b0fd-4b446c61bcda)
+![To Do List - Google Chrome 1_1_2025 10_54_38 PM](https://github.com/user-attachments/assets/f460fcc0-838a-4df5-a5a8-1508af8fc642)
+
 REQUIREMENTS
 To run this project, you'll need to include the following external resources:
 
