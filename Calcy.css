@@ -1,0 +1,66 @@
+.calcy {
+            background-color: rgb(9, 134, 134);
+            margin-top: 0%;
+        }
+
+        .card {
+            margin-top: 20px;
+            justify-content: center;
+            background-color: rgb(16, 16, 16);
+        }
+
+        .display {
+            color: aliceblue;
+            height: 80px;
+            background-color: rgb(84, 82, 82);
+        }
+
+        #expression {
+            margin: 5px;
+            padding: 3px;
+            font-size: large;
+        }
+
+        #number {
+            margin: 5px;
+            padding: 3px;
+            font-size: larger;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            background-color: rgb(7, 173, 173);
+            padding: 9px;
+        }
+
+        .container-fluid {
+            margin: 0%;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 3px;
+            margin: 4px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: rgb(200, 198, 198);
+        }
+
+        footer {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            background-color: rgb(7, 98, 98);
+            padding: 15px;
+            color: aliceblue;
+            font-family: 'Times New Roman', Times, serif;
+        }
