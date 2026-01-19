@@ -3,7 +3,7 @@
 > A modern, keyboard-friendly scientific calculator with a Python-powered brain.
 
 <p align="center">
-  <img width="1488" height="863" alt="image" src="https://github.com/user-attachments/assets/9283b52b-1766-4a98-982f-447beac23a1f" />
+  <img width="626" height="776" alt="image" src="https://github.com/user-attachments/assets/09c4df16-f5b1-4371-810a-80bbb9e510b0" />
   <img width="626" height="224" alt="image" src="https://github.com/user-attachments/assets/384440f1-d066-4654-9f25-24cc65e2324d" />
   <img width="628" height="245" alt="image" src="https://github.com/user-attachments/assets/eda85695-3787-41b1-af52-379d058afb12" />
 </p>
@@ -116,6 +116,7 @@ The calculator will now communicate with the backend for all evaluations and mod
 - **CORS errors:** Ensure `backend.py` is running; it enables CORS for local use.
 - **SymPy missing:** Re-run `pip install sympy`.
 - **Nothing happens on button press:** Check browser console; the backend must be reachable at `http://127.0.0.1:5000`.
+
 
 
 
