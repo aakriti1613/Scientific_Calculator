@@ -1,42 +1,138 @@
-# Scientific_Calculator
-This project is a fully functional **scientific calculator** built using **HTML**, **CSS**, **Bootstrap**, and **JavaScript**. The calculator is designed to perform basic arithmetic operations as well as advanced scientific calculations, including trigonometric functions, logarithms, exponentiation, and more. It offers a sleek, responsive user interface that allows for easy navigation and input, ensuring a seamless user experience for both mobile and desktop devices.
+# MathMental Scientific Calculator
 
-FEATURES
-- **Basic Arithmetic Operations:** Addition, subtraction, multiplication, and division.
-- **Advanced Scientific Functions:** 
-  - Trigonometric functions (`sin`, `cos`, `tan`, and their inverses).
-  - Logarithmic functions (`log`, `ln`).
-  - Exponentiation (`X^Y`, `10^X`, `e^X`).
-  - Square root, cube root, and factorial.
-  - Degree and Radian modes for trigonometric operations.
-- **Keyboard and Click Support:** Users can either type or click buttons for input.
-- **Error Handling:** Proper error messages for invalid inputs (e.g., division by zero, negative roots).
-- **Responsive Design:** The layout adjusts automatically for different screen sizes, making it accessible on both mobile and desktop devices.
+> A modern, keyboard-friendly scientific calculator with a Python-powered brain.
 
-![To Do List - Google Chrome 1_1_2025 10_56_08 PM](https://github.com/user-attachments/assets/3ee0e327-2303-4bf0-b0fd-4b446c61bcda)
-![To Do List - Google Chrome 1_1_2025 10_54_38 PM](https://github.com/user-attachments/assets/f460fcc0-838a-4df5-a5a8-1508af8fc642)
+<p align="center">
+  <img src="docs/screenshots/screenshot-01.png" alt="UI Screenshot – Desktop layout placeholder" width="260" />
+  <img src="docs/screenshots/screenshot-02.png" alt="UI Screenshot – Scientific functions placeholder" width="260" />
+  <img src="docs/screenshots/screenshot-03.png" alt="UI Screenshot – Mobile view placeholder" width="260" />
+</p>
+<p align="center"><em>Replace the three placeholders above with your actual UI captures.</em></p>
 
-REQUIREMENTS
-To run this project, you'll need to include the following external resources:
+## Table of Contents
 
-1. **Bootstrap (for responsive design and layout)**
-   - Make sure to include the Bootstrap vendor file in the project:
-     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-   - You can download the latest version of Bootstrap from the official [Bootstrap website](https://getbootstrap.com).
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Run the App](#run-the-app)
+- [Keyboard Shortcuts](#keyboard-shortcuts)
+- [API Endpoints](#api-endpoints)
+- [Troubleshooting](#troubleshooting)
+- [Roadmap & Ideas](#roadmap--ideas)
+- [Contributing](#contributing)
 
-2. **FontAwesome (for icons)**
-   - FontAwesome is used for adding icons to the calculator buttons. Ensure you include the FontAwesome library:
-     <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
-   - You can download the latest version of FontAwesome from the official [FontAwesome website](https://fontawesome.com).
+## Overview
 
-INSTALLATION
+MathMental pairs a responsive Bootstrap front end with a Flask + SymPy service that evaluates expressions, toggles between degree and radian modes, and keeps the UI feeling instant. The calculator works offline once dependencies are installed—just open the HTML file while the backend server is running.
 
-1. Clone the repository:
-   git clone https://github.com/aakriti1613/Scientific_Calculator.git
+## Features
 
-2. Include the Bootstrap and FontAwesome vendor files in the `vendor` folder or link to the respective CDNs.
+- 🎨 Glassmorphism-inspired UI with responsive navbar and layout.
+- 🧮 60+ scientific operations, inverse trig, factorial, powers, and hyperbolics.
+- 🔁 Degree ↔ Radian toggle synchronized between client and server.
+- ⌨️ Full keyboard support and smart input helpers.
+- 📋 One-click copy of the latest evaluated result.
+- 🔌 REST API endpoints ready to integrate into other math tools.
 
-3. Open `Calcy.html` in your browser.
+## Tech Stack
 
-CONTACT
-Feel free to reach out with any feedback or suggestions!
+- Frontend: HTML5, Bootstrap 5, Font Awesome 6, custom CSS.
+- Interactivity: Vanilla JavaScript + jQuery helper methods.
+- Backend: Python 3, Flask, Flask-CORS, SymPy, standard math utilities.
+
+## Project Structure
+
+```
+.
+├── Calcy.html        # Entry point for the UI
+├── Calcy.css         # Styling extracted from the original inline styles
+├── Calcy.js          # Calculator logic and event wiring
+├── backend.py        # Flask API for calculation + mode handling
+└── vendor/           # Optional local copies of Bootstrap & Font Awesome assets
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.9+ (SymPy and Flask run best on recent versions).
+- pip (bundled with most Python installs).
+
+### Installation
+
+1. Clone or download this repository to your machine.
+2. (Optional) Create and activate a virtual environment.
+3. Install backend dependencies:
+
+   ```bash
+   pip install flask flask-cors sympy
+   ```
+
+### Run the App
+
+1. **Start the backend:**
+
+   ```bash
+   python backend.py
+   ```
+
+   The Flask server listens on `http://127.0.0.1:5000`.
+
+2. **Open the frontend:**
+   - Double-click `Calcy.html`, or
+   - Serve the directory with any static server and visit `/Calcy.html`.
+
+The calculator will now communicate with the backend for all evaluations and mode switches.
+
+## Keyboard Shortcuts
+
+- `0-9`, `.` : enter numbers quickly.
+- `+`, `-`, `*`, `/`, `^`, `%` : arithmetic operators.
+- `Enter` or `=` : evaluate the current expression.
+- `Backspace` : delete the last character.
+- `Delete` or `Esc` : clear everything.
+- `s`, `o`, `t`, `l`, `g`, `p`, `e` : insert `sin(`, `cos(`, `tan(`, `ln(`, `log(`, `π`, `e`.
+
+## API Endpoints
+
+| Method | Endpoint       | Description                         |
+| ------ | -------------- | ----------------------------------- |
+| POST   | `/calculate`   | Evaluate an expression.             |
+| POST   | `/mode`        | Switch between `deg` and `rad`.     |
+
+**Sample payload** for `/calculate`:
+
+```json
+{
+  "expression": "sin(45) + log(10)"
+}
+```
+
+## Troubleshooting
+
+- **CORS errors:** Ensure `backend.py` is running; it enables CORS for local use.
+- **SymPy missing:** Re-run `pip install sympy`.
+- **Nothing happens on button press:** Check browser console; the backend must be reachable at `http://127.0.0.1:5000`.
+
+## Roadmap & Ideas
+
+- Graphing mode for plotted expressions.
+- History panel with export/share options.
+- Dark/light theming toggle driven by CSS variables.
+- Progressive Web App (PWA) packaging.
+
+## Contributing
+
+1. Fork the project and create a feature branch.
+2. Make your changes, following the existing code style.
+3. Document updates in this README if they affect usage.
+4. Open a pull request describing your improvements.
+
+---
+
+Need assets for the gallery above? Create `docs/screenshots/` and drop three `.png` files named `screenshot-01.png`, `screenshot-02.png`, and `screenshot-03.png`—they will render automatically in the header.
+

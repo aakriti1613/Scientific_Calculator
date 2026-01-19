@@ -1,164 +1,226 @@
+// toggle behavior: open/close the mobile menu
+(function () {
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('navMenu');
+
+    toggle.addEventListener('click', function () {
+        menu.classList.toggle('show');
+    });
+
+    // close menu when clicking outside
+    document.addEventListener('click', function (e) {
+        const target = e.target;
+        if (!menu.contains(target) && !toggle.contains(target) && menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    });
+
+    // close menu on Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    });
+})();
+
+// --- State ---
 let isError = false;
+let isDegreeMode = true;
 
-        // Function to update the current number display
-        function appendNumber(number) {
-            if (isError) clearDisplay();
-            var currentNum = $("#number").html();
-            var newNum = currentNum + number;
-            $("#number").html(newNum);
-        }
+// --- Helpers to update UI ---
+function setExpression(text) { $("#expression").text(text || ''); }
+function setNumber(text) { $("#number").text(text || ''); }
+function getExpression() { return $("#expression").text() || ''; }
+function getNumber() { return $("#number").text() || ''; }
 
-        // Function to append operators to the expression
-        function appendOperator(operator) {
-            var currentNum = $("#number").html();
-            var expression = $("#expression").html();
+// Append raw token to the 'number' area (used for numbers and functions like sin( )
+function appendNumber(token) {
+    if (isError) { clearDisplay(); }
+    $("#number").text(getNumber() + token);
+}
 
-            if (currentNum !== "") {
-                expression += currentNum + " " + operator + " ";
-                $("#expression").html(expression);
-                $("#number").html('');
-            }
-        }
+// When operator clicked, push current number to expression and add operator
+function appendOperator(op) {
+    let cur = getNumber();
+    let expr = getExpression();
 
-        // Function to evaluate the entire expression
-        function evaluateExpression() {
-            var expression = $("#expression").html() + $("#number").html();
+    // If number area empty and expression ends with an operator, allow replacing
+    if (!cur && expr && /[+\-*/^ ]$/.test(expr)) {
+        expr = expr.slice(0, -1) + op;
+        setExpression(expr);
+        return;
+    }
 
-            try {
-                var result = customEval(expression);
-                $("#expression").html(expression);
-                $("#number").html("= " + result);
-            } catch (error) {
-                $("#number").html("Error");
-                isError = true;
-            }
-        }
+    if (cur === '' && expr === '' && (op === '+' || op === '-')) {
+        // allow unary + or - in number zone
+        appendNumber(op);
+        return;
+    }
 
-        // Handle keypress events for numbers, operators, and the equals key
-        $(document).on('keypress', function (e) {
-            var key = e.key;
-            if (!isNaN(key)) {
-                appendNumber(key);
-            } else if (['+', '-', '*', '/', '.'].includes(key)) {
+    if (cur !== '') {
+        // If we are adding an operator but number ends with '(' (e.g. user pressed function)
+        // we allow adding directly: e.g. sin( -> treat as part of number, avoid adding operator
+        setExpression(expr + cur + op);
+        setNumber('');
+    } else {
+        // if no current number, append op to expression
+        setExpression(expr + op);
+    }
+}
+
+function clearDisplay() {
+    setNumber('');
+    setExpression('');
+    isError = false;
+}
+
+function removeLastCharacter() {
+    let cur = getNumber();
+    if (cur && cur.length > 0) {
+        setNumber(cur.slice(0, -1));
+    } else {
+        // if number empty, remove last char from expression
+        let e = getExpression();
+        setExpression(e.slice(0, -1));
+    }
+}
+
+// --- Backend communication ---
+async function evaluateExpression() {
+    let expression = getExpression() + getNumber();
+    if (!expression) return;
+    try {
+        const resp = await fetch("http://127.0.0.1:5000/calculate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ expression: expression })
+        });
+        const data = await resp.json();
+        // show original expression on top and result in number with leading "="
+        setExpression(expression);
+        setNumber("= " + data.result);
+    } catch (err) {
+        setNumber("Error");
+        isError = true;
+        console.error(err);
+    }
+}
+
+// Toggle degree/radian mode both UI and backend
+async function switchMode(mode) {
+    if (mode === 'toggle') {
+        isDegreeMode = !isDegreeMode;
+    } else {
+        isDegreeMode = (mode === 'deg');
+    }
+    $("#modeToggle").text(isDegreeMode ? 'Deg' : 'Rad');
+    // notify backend
+    try {
+        await fetch("http://127.0.0.1:5000/mode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mode: isDegreeMode ? 'deg' : 'rad' })
+        });
+    } catch (e) { console.warn('mode sync failed'); }
+}
+
+// --- Event handling for buttons ---
+$(document).ready(function () {
+    // Button clicks
+    $('.btn-key').on('click', function () {
+        const key = $(this).data('event_key');
+
+        if (['+', '-', '*', '/', '^', ' * 10^', '×', '÷'].includes(key)) {
+            // normalize the ×10^ special key
+            if (key === ' * 10^' || key === '×10^') {
+                appendNumber(' * 10^');
+            } else {
                 appendOperator(key);
-            } else if (key === '=' || key == 'Enter') {
-                evaluateExpression();
             }
-        });
+        } else if (key === '=') {
+            evaluateExpression();
+        } else if (key === 'Backspace') {
+            removeLastCharacter();
+        } else if (key === 'Delete') {
+            clearDisplay();
+        } else if (key === '°') { // keep compatibility; in grid we used mode toggle button
+            switchMode('deg');
+        } else if (key === 'c') {
+            switchMode('rad');
+        } else if (key === 'e') {
+            appendNumber('e');
+        } else {
+            appendNumber(key);
+        }
+    });
 
-        function clearDisplay() {
-            $("#number").html('');
-            $("#expression").html('');
-            isError = false;
+    // Mode toggle top-right
+    $('#modeToggle').on('click', function () { switchMode('toggle'); });
+
+    // Keyboard handling (keydown to catch backspace/delete)
+    $(document).on('keydown', function (e) {
+        const key = e.key;
+
+        // allow numbers and parentheses and decimal
+        if ((key >= '0' && key <= '9') || key === '.') {
+            appendNumber(key);
+            e.preventDefault();
+            return;
         }
 
-        function removeLastCharacter() {
-            var currentNum = $("#number").html();
-            if (currentNum) {
-                var updatedNum = currentNum.slice(0, -1);
-                $("#number").html(updatedNum);
-            }
+        // functions mapped to single-letter shortcuts (optional)
+        // s -> sin(, o -> cos(, t -> tan(, l -> ln(, g -> log(
+        if (key.toLowerCase() === 's') { appendNumber('sin('); e.preventDefault(); return; }
+        if (key.toLowerCase() === 'o') { appendNumber('cos('); e.preventDefault(); return; }
+        if (key.toLowerCase() === 't') { appendNumber('tan('); e.preventDefault(); return; }
+        if (key.toLowerCase() === 'l') { appendNumber('ln('); e.preventDefault(); return; }
+        if (key.toLowerCase() === 'g') { appendNumber('log('); e.preventDefault(); return; }
+
+        if (['+', '-', '*', '/', '^', '%'].includes(key)) {
+            appendOperator(key);
+            e.preventDefault();
+            return;
         }
 
-        // Button click events
-        $('.calc-btn').on('click', function () {
-            var key = $(this).data('event_key');
-
-            if (['+', '-', '*', '/'].includes(key)) {
-                appendOperator(key);
-            }
-            else if (key == ".") { appendDecimal(); }
-            else if (key == '=' || key == 'Enter') {
-                evaluateExpression();
-            }
-            else if (key === 'Backspace') {
-                removeLastCharacter();
-            }
-            else if (key === 'Delete') {
-                clearDisplay();
-            }
-
-            else {
-                appendNumber(key);
-            }
-        });
-
-        // Custom eval function to handle scientific operations
-        function customEval(expression) {
-            // Replace scientific functions with JavaScript equivalents
-            expression = expression.replace(/sin\((.*?)\)/g, 'Math.sin($1)');
-            expression = expression.replace(/cos\((.*?)\)/g, 'Math.cos($1)');
-            expression = expression.replace(/tan\((.*?)\)/g, 'Math.tan($1)');
-            expression = expression.replace(/log\((.*?)\)/g, 'Math.log10($1)');
-            expression = expression.replace(/ln\((.*?)\)/g, 'Math.log($1)');
-            expression = expression.replace(/sin⁻¹\((.*?)\)/g, 'Math.asin($1)');
-            expression = expression.replace(/cos⁻¹\((.*?)\)/g, 'Math.acos($1)');
-            expression = expression.replace(/tan⁻¹\((.*?)\)/g, 'Math.atan($1)');
-            expression = expression.replace(/e/g, Math.E);
-            expression = expression.replace(/π/g, Math.PI);
-            expression = expression.replace(/√\((.*?)\)/g, 'Math.sqrt($1)');
-            expression = expression.replace(/∛\((.*?)\)/g, 'Math.cbrt($1)');
-            expression = expression.replace(/\^/g, 'Math.pow($1, $2)');
-            expression = expression.replace(/10\^(\d+)/g, 'Math.pow(10, $1)');
-            expression = expression.replace(/(\d+)!/g, 'factorial($1)');
-
-            return eval(expression);  // Evaluate the expression
+        if (key === 'Enter' || key === '=') {
+            evaluateExpression();
+            e.preventDefault();
+            return;
         }
 
-        // Factorial function
-        function factorial(n) {
-            if (n == 0 || n == 1) return 1;
-            return n * factorial(n - 1);
+        if (key === 'Backspace') {
+            removeLastCharacter();
+            e.preventDefault();
+            return;
         }
 
-        function appendDecimal() {
-            var currentNum = $("#number").html();
-            if (!currentNum.includes('.')) {
-                $("#number").html(currentNum + '.');
-            }
+        if (key === 'Delete' || key === 'Escape') {
+            clearDisplay();
+            e.preventDefault();
+            return;
         }
 
-        $(document).on('keydown', function () {
-            if (isError) clearDisplay();
-        });
-
-        var isDegreeMode = true;
-
-        $('.deg-rad-btn').on('click', function () {
-            let selectedMode = $(this).text();
-
-            if (selectedMode === 'Deg') {
-                isDegreeMode = true;
-                $('.deg-rad-btn[data-event_key="°"]').addClass('active');
-                $('.deg-rad-btn[data-event_key="c"]').removeClass('active');
-            }
-            else if (selectedMode === 'Rad') {
-                isDegreeMode = false;
-                $('.deg-rad-btn[data-event_key="c"]').addClass('active');
-                $('.deg-rad-btn[data-event_key="°"]').removeClass('active');
-            }
-        });
-
-        function toggleDegreeRadian() {
-            isDegreeMode = !isDegreeMode;
+        if (key === '(' || key === ')') {
+            appendNumber(key);
+            e.preventDefault();
+            return;
         }
 
-        function toRadians(degrees) {
-            return degrees * (Math.PI / 180);
-        }
+        // quick inserts
+        if (key.toLowerCase() === 'p') { appendNumber('π'); e.preventDefault(); return; }
+        if (key.toLowerCase() === 'e') { appendNumber('e'); e.preventDefault(); return; }
+    });
 
-        function toDegrees(radians) {
-            return radians * (180 / Math.PI);
+    // Nice UX: copy result by clicking the result
+    $('#number').on('click', function () {
+        const txt = $(this).text();
+        if (txt.startsWith('= ')) {
+            const toCopy = txt.slice(2);
+            navigator.clipboard?.writeText(toCopy).then(() => {
+                // subtle feedback
+                $(this).fadeOut(100).fadeIn(100);
+            });
         }
+    });
+});
 
-        function evaluateTrigFunction(fn, value) {
-            if (isDegreeMode) {
-                value = toRadians(value);
-            }
-            return evaluateScientificFunction(fn, value);
-        }
-
-        $('.deg-rad-btn').on('click', function () {
-            toggleDegreeRadian();
-            $(this).html(isDegreeMode ? "Deg" : "Rad");
-        });
