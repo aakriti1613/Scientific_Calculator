@@ -3,11 +3,10 @@
 > A modern, keyboard-friendly scientific calculator with a Python-powered brain.
 
 <p align="center">
-  <img src="docs/screenshots/screenshot-01.png" alt="UI Screenshot – Desktop layout placeholder" width="260" />
-  <img src="docs/screenshots/screenshot-02.png" alt="UI Screenshot – Scientific functions placeholder" width="260" />
-  <img src="docs/screenshots/screenshot-03.png" alt="UI Screenshot – Mobile view placeholder" width="260" />
+  <img width="1488" height="863" alt="image" src="https://github.com/user-attachments/assets/9283b52b-1766-4a98-982f-447beac23a1f" />
+  <img width="626" height="224" alt="image" src="https://github.com/user-attachments/assets/384440f1-d066-4654-9f25-24cc65e2324d" />
+  <img width="628" height="245" alt="image" src="https://github.com/user-attachments/assets/eda85695-3787-41b1-af52-379d058afb12" />
 </p>
-<p align="center"><em>Replace the three placeholders above with your actual UI captures.</em></p>
 
 ## Table of Contents
 
@@ -118,21 +117,5 @@ The calculator will now communicate with the backend for all evaluations and mod
 - **SymPy missing:** Re-run `pip install sympy`.
 - **Nothing happens on button press:** Check browser console; the backend must be reachable at `http://127.0.0.1:5000`.
 
-## Roadmap & Ideas
 
-- Graphing mode for plotted expressions.
-- History panel with export/share options.
-- Dark/light theming toggle driven by CSS variables.
-- Progressive Web App (PWA) packaging.
-
-## Contributing
-
-1. Fork the project and create a feature branch.
-2. Make your changes, following the existing code style.
-3. Document updates in this README if they affect usage.
-4. Open a pull request describing your improvements.
-
----
-
-Need assets for the gallery above? Create `docs/screenshots/` and drop three `.png` files named `screenshot-01.png`, `screenshot-02.png`, and `screenshot-03.png`—they will render automatically in the header.
 
